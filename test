@@ -1,5 +1,72 @@
-Collaborator Message: Test Testing Testing collaboration changes!
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
-Collaboreadioead aodjowjd aijwdijas diadwuh 9quhwdsu 0q8w said 
+public class DialougeManager : MonoBehaviour
+{
+    [Header("Dialouges")]
+    public Text[] PlayerDialouge; //All stored Player dialouges
+    public Text[] NPCDialouge; //All stored NPC dialouges 
 
-Edited File!!!!
+    [Header("Object References")]
+    public Text PlayerDialougeDisplay; //Ingame Visible Dialouge for the Player's dialouge
+    public Text NPCDialougeDisplay; //Ingame Visible Dialouge for the NPC's dialouge
+    int dialougeIndex = 0; //Current shown dialouge
+
+    bool updatePlayerDialouge; // Should update player dialouge or NPC?
+
+    public void ShowNextDialouge () //Shows the next dialouge that's in the dialouge store when the Continue button is pressed.
+    {
+        if (dialougeIndex >= NPCDialouge.Length) // Stops the method from continuing if the dialouge index is out of bounds
+        {
+            print("Ended.");
+            //dialougeIndex = 0; //Loops the conversation
+            return; 
+        }
+
+        #region IMG
+        NPCDisplayImage.texture = NPCImage[dialougeIndex].texture; //Changes NPC Image (Optional)
+        PlayerDisplayImage.texture = PlayerImage[dialougeIndex].texture; //Changes NPC Image (Optional)
+        #endregion
+
+        if (updatePlayerDialouge)
+        {
+            PlayerDialougeDisplay.text = PlayerDialouge[dialougeIndex].text; //Changes Player Dialouge
+            NPCDialougeDisplay.text = "";
+        }
+        else
+        {
+            NPCDialougeDisplay.text = NPCDialouge[dialougeIndex].text; //Changes NPC Dialouge
+            PlayerDialougeDisplay.text = "";
+
+            dialougeIndex++; //Readies the index for the next button press.
+        }
+
+        updatePlayerDialouge = !updatePlayerDialouge; //Updates current speaker
+
+    }
+
+
+
+
+    #region IMG
+    public RawImage NPCDisplayImage; //NPC's Image (Optional)
+    public RawImage PlayerDisplayImage; //Player's Image (Optional)
+
+    public RawImage[] NPCImage; //Npc Image
+    public RawImage[] PlayerImage; //Player Image
+
+    void Start()
+    { 
+        NPCDisplayImage.texture = NPCImage[dialougeIndex].texture; //Changes NPC Image (Optional)
+        PlayerDisplayImage.texture = PlayerImage[dialougeIndex].texture; //Changes NPC Image (Optional)
+
+        //Enables Images
+        NPCDisplayImage.color = Color.white;
+        PlayerDisplayImage.color = Color.white;
+    }
+
+    #endregion
+
+}
